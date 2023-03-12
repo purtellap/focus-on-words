@@ -39,6 +39,8 @@ class Strings {
   static const String username = '@username';
   static const String followers = 'followers';
   static const String favorites = 'Favorites';
+
+  static const String noFavorites = 'There\'s nothing here :(';
 }
 
 class TextStyles {

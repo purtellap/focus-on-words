@@ -33,4 +33,10 @@ class BooksProvider extends ChangeNotifier {
       return null;
     }
   }
+
+  Book getRandomBook() {
+    final List<Book> booksList = _books;
+    booksList.shuffle();
+    return booksList.first;
+  }
 }

@@ -35,18 +35,27 @@ class _BooksList extends StatelessWidget {
       builder: (context, bp, child) {
         return Consumer<FavoritesProvider>(
           builder: (context, fp, child) {
-            return GridView.builder(
-              itemCount: bp.books.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemBuilder: (_, int i) {
-                return InkWell(
-                  onTap: () => FlowUtils.pushBookDetail(context, bp.books[i]),
-                  child: GridTile(
-                    child: BookCard(book: bp.books[i]),
+            return Column(
+              children: [
+                // Search bar
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: bp.books.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2),
+                    itemBuilder: (_, int i) {
+                      return InkWell(
+                        onTap: () =>
+                            FlowUtils.pushBookDetail(context, bp.books[i]),
+                        child: GridTile(
+                          child: BookCard(book: bp.books[i]),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             );
           },
         );

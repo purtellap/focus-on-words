@@ -21,6 +21,21 @@ class FavoritesProvider extends ChangeNotifier {
   }
 
   List<String> _getFavorites() {
-    return ['1', '2'];
+    return [];
+  }
+
+  /// Check if favorite
+  bool isFavorite(String id) {
+    return _favorites.contains(id);
+  }
+
+  /// Add/remove favorite
+  void favorite(String id) {
+    if (_favorites.contains(id)) {
+      _favorites.remove(id);
+    } else {
+      _favorites.add(id);
+    }
+    notifyListeners();
   }
 }

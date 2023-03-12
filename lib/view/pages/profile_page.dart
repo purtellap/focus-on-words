@@ -73,19 +73,26 @@ class _FavoritesList extends StatelessWidget {
       return Consumer<FavoritesProvider>(
         builder: (context, fp, child) {
           List<Book> books = fp.favoriteBooks(bp.books);
-          return GridView.builder(
-            itemCount: books.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            itemBuilder: (_, int i) {
-              return InkWell(
-                onTap: () => FlowUtils.pushBookDetail(context, books[i]),
-                child: GridTile(
-                  child: BookCard(book: books[i]),
-                ),
-              );
-            },
-          );
+          if (books.isEmpty) {
+            return Text(
+              Strings.noFavorites,
+              style: TextStyles.subtext.copyWith(fontStyle: FontStyle.italic),
+            );
+          } else {
+            return GridView.builder(
+              itemCount: books.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+              itemBuilder: (_, int i) {
+                return InkWell(
+                  onTap: () => FlowUtils.pushBookDetail(context, books[i]),
+                  child: GridTile(
+                    child: BookCard(book: books[i]),
+                  ),
+                );
+              },
+            );
+          }
         },
       );
     });

@@ -68,7 +68,7 @@ class App extends StatelessWidget {
             case Keys.book:
               Book? book = FlowUtils.getBookFromArgs(settings.arguments);
               return book != null
-                  ? _buildRoute(BookPage(book: book))
+                  ? _buildRoute(BookPage(book: book), isNested: true)
                   : _buildRoute(const ErrorPage());
             default:
               return _buildRoute(const ErrorPage());
@@ -80,12 +80,15 @@ class App extends StatelessWidget {
 }
 
 /// Build route
-Route<dynamic> _buildRoute(Widget page, {bool animate = false}) {
-  if (animate) {
-    return MaterialPageRoute(builder: (c) => Adapter(page: page));
-  } else {
-    return _UnanimatedPageRoute(builder: (c) => Adapter(page: page));
-  }
+Route<dynamic> _buildRoute(
+  Widget page, {
+  bool isNested = false,
+}) {
+  return isNested
+      ? MaterialPageRoute(
+          builder: (c) => Adapter(page: page, isNested: isNested))
+      : _UnanimatedPageRoute(
+          builder: (c) => Adapter(page: page, isNested: isNested));
 }
 
 /// Unanimated transition
