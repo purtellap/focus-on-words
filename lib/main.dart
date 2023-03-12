@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:focus_on_words_app/data/book.dart';
+import 'package:focus_on_words_app/data/provider/bottom_navigation.dart';
+import 'package:focus_on_words_app/data/provider/favorites.dart';
+import 'package:focus_on_words_app/data/provider/books.dart';
+import 'package:focus_on_words_app/util/flow_utils.dart';
 import 'package:focus_on_words_app/view/adapter.dart';
-import 'package:focus_on_words_app/data/bottom_navigation.dart';
-import 'package:focus_on_words_app/view/pages/error.dart';
-import 'package:focus_on_words_app/view/pages/home.dart';
-import 'package:focus_on_words_app/view/pages/favorites.dart';
+import 'package:focus_on_words_app/view/pages/book_detail.dart';
+import 'package:focus_on_words_app/view/pages/error_page.dart';
 import 'package:focus_on_words_app/res/res.dart';
-import 'package:focus_on_words_app/view/pages/profile.dart';
+import 'package:focus_on_words_app/view/pages/home_page.dart';
+import 'package:focus_on_words_app/view/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {
@@ -36,8 +40,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => BottomNavProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (c) => BottomNavProvider()),
+        ChangeNotifierProvider(create: (c) => FavoritesProvider()..init()),
+        ChangeNotifierProvider(create: (c) => BooksProvider()..init()),
+      ],
       child: MaterialApp(
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -55,12 +63,13 @@ class App extends StatelessWidget {
           switch (settings.name) {
             case Keys.home:
               return _buildRoute(const Home());
-            case Keys.favorites:
-              return _buildRoute(const FavoritesPage());
             case Keys.profile:
               return _buildRoute(const ProfilePage());
-            // case Keys.book:
-            //   return _buildRoute(const BookPage());
+            case Keys.book:
+              Book? book = FlowUtils.getBookFromArgs(settings.arguments);
+              return book != null
+                  ? _buildRoute(BookPage(book: book))
+                  : _buildRoute(const ErrorPage());
             default:
               return _buildRoute(const ErrorPage());
           }

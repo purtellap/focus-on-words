@@ -16,9 +16,6 @@ class BottomNavProvider extends ChangeNotifier {
         FlowUtils.pushNav(context, Keys.home);
         break;
       case 1:
-        FlowUtils.pushNav(context, Keys.favorites);
-        break;
-      case 2:
         FlowUtils.pushNav(context, Keys.profile);
         break;
       default:

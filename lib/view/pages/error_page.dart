@@ -8,12 +8,11 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Align(
-      alignment: Alignment.topCenter,
+      alignment: Alignment.center,
       child: SelectableText(
         Strings.error,
         textAlign: TextAlign.center,
-        style: TextStyle(
-            color: Colors.black87, fontSize: 36, fontWeight: FontWeight.bold),
+        style: TextStyles.title,
       ),
     );
   }
