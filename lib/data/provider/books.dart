@@ -10,20 +10,33 @@ class BooksProvider extends ChangeNotifier {
   }
 
   List<Book> _fetchBooks() {
+
     return [
       const Book(
         id: '1',
         title: 'Test Book',
         author: 'Author',
         description: 'Description',
+        thumbnail: '',
       ),
       const Book(
         id: '2',
         title: 'Test Book 2',
         author: 'Author 2',
         description: 'Description 2',
+        thumbnail: '',
       )
     ];
+  }
+
+  List<Book> filterBooks(String query) {
+    final List<Book> filteredBooks = [];
+    for (Book b in books) {
+      if (b.title.contains(query) || b.author.contains(query)) {
+        filteredBooks.add(b);
+      }
+    }
+    return filteredBooks;
   }
 
   static Book? getBookFromId(String id, List<Book> books) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:focus_on_words_app/data/book.dart';
+import 'package:focus_on_words_app/data/provider/bonus.dart';
 import 'package:focus_on_words_app/data/provider/bottom_navigation.dart';
 import 'package:focus_on_words_app/data/provider/favorites.dart';
 import 'package:focus_on_words_app/data/provider/books.dart';
@@ -45,6 +46,7 @@ class App extends StatelessWidget {
         ChangeNotifierProvider(create: (c) => BottomNavProvider()),
         ChangeNotifierProvider(create: (c) => FavoritesProvider()..init()),
         ChangeNotifierProvider(create: (c) => BooksProvider()..init()),
+        ChangeNotifierProvider(create: (c) => BonusProvider()..init()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -55,7 +57,9 @@ class App extends StatelessWidget {
             selectionColor: ThemeColors.selectionColor,
             selectionHandleColor: Colors.transparent,
           ),
-          colorScheme: const ColorScheme.dark(),
+          colorScheme: const ColorScheme.dark(
+            primary: ThemeColors.textColor,
+          ),
         ),
         initialRoute: Keys.home,
         onGenerateRoute: (settings) {

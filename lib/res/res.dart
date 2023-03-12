@@ -18,6 +18,7 @@ class ThemeColors {
   static const Color backgroundColor = Color(0xFF121212);
   static const Color cardColor = Color(0xff0a0a0a);
   static const Color overlayColor = Color(0x11ffffff);
+  static const Color textFieldColor = Color(0xff333333);
   static const Color textColor = Colors.white;
   static const Color secondaryTextColor = Colors.grey;
 
@@ -33,6 +34,7 @@ class Strings {
 
   // Home
   static const String explore = 'Explore';
+  static const String filter = 'Filter by Title or Author';
 
   // Profile
   static const String myProfile = 'My profile';

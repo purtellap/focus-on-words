@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:focus_on_words_app/data/book.dart';
+import 'package:focus_on_words_app/data/provider/bonus.dart';
 import 'package:focus_on_words_app/data/provider/books.dart';
-import 'package:focus_on_words_app/data/provider/favorites.dart';
 import 'package:focus_on_words_app/res/res.dart';
 import 'package:focus_on_words_app/util/flow_utils.dart';
+import 'package:focus_on_words_app/view/widgets/bonus_card.dart';
 import 'package:focus_on_words_app/view/widgets/book_card.dart';
 import 'package:provider/provider.dart';
 
@@ -11,55 +13,97 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const [
-        Text(
-          Strings.explore,
-          textAlign: TextAlign.left,
-          style: TextStyles.title,
-        ),
-        SizedBox(height: 16),
-        Expanded(child: _BooksList()),
-      ],
-    );
-  }
-}
-
-class _BooksList extends StatelessWidget {
-  const _BooksList();
-
-  @override
-  Widget build(BuildContext context) {
     return Consumer<BooksProvider>(
       builder: (context, bp, child) {
-        return Consumer<FavoritesProvider>(
-          builder: (context, fp, child) {
-            return Column(
-              children: [
-                // Search bar
-                Expanded(
-                  child: GridView.builder(
-                    itemCount: bp.books.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                    itemBuilder: (_, int i) {
-                      return InkWell(
-                        onTap: () =>
-                            FlowUtils.pushBookDetail(context, bp.books[i]),
-                        child: GridTile(
-                          child: BookCard(book: bp.books[i]),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+        return Consumer<BonusProvider>(
+          builder: (context, bonus, child) {
+            return StreamBuilder<bool>(
+              stream: bonus.stream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  showBonusMessage(context);
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: const [
+                    Text(
+                      Strings.explore,
+                      textAlign: TextAlign.left,
+                      style: TextStyles.title,
+                    ),
+                    SizedBox(height: 16),
+                    Expanded(child: _BooksList()),
+                  ],
+                );
+              },
             );
           },
         );
       },
+    );
+  }
+}
+
+class _BooksList extends StatefulWidget {
+  const _BooksList();
+
+  @override
+  State<_BooksList> createState() => _BooksListState();
+}
+
+class _BooksListState extends State<_BooksList> {
+  String _query = '';
+
+  @override
+  Widget build(BuildContext context) {
+    BooksProvider bp = context.read<BooksProvider>();
+    List<Book> books = bp.filterBooks(_query);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          child: TextField(
+            onChanged: (value) => setState(() {
+              _query = value;
+            }),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: ThemeColors.cardColor,
+              prefixIcon: const Icon(
+                Icons.search,
+                color: ThemeColors.textFieldColor,
+              ),
+              border: const OutlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(Dimens.borderRadius),
+                ),
+              ),
+              hintText: Strings.filter,
+              hintStyle: TextStyles.subtext.copyWith(
+                fontSize: 14,
+                color: ThemeColors.textFieldColor,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: GridView.builder(
+            itemCount: books.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            itemBuilder: (_, int i) {
+              return InkWell(
+                onTap: () => FlowUtils.pushBookDetail(context, books[i]),
+                child: GridTile(
+                  child: BookCard(book: books[i]),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
