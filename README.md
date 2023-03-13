@@ -1,3 +1,3 @@
-# focus_on_words_app
+# Focus on words app
 
-A new Flutter project.
+Google books api demo
