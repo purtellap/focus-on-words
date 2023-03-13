@@ -20,42 +20,47 @@ class BonusCard extends StatelessWidget {
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(16)),
             color: ThemeColors.cardColor),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Container(
-                color: ThemeColors.selectionColor,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: ThemeColors.cardColor,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(book.thumbnail),
+                  ),
+                ),
                 width: 48,
                 height: 48,
               ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    book.title,
-                    style: TextStyles.text,
-                    textAlign: TextAlign.left,
-                  ),
-                  Text(
-                    book.author,
-                    textAlign: TextAlign.left,
-                    style: TextStyles.subtext,
-                  ),
-                ],
+              const SizedBox(width: 24),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      book.title,
+                      style: TextStyles.text.copyWith(fontSize: 14),
+                      textAlign: TextAlign.left,
+                    ),
+                    Text(
+                      book.authors,
+                      textAlign: TextAlign.left,
+                      style: TextStyles.subtext.copyWith(fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            IconButton(
-              onPressed: () =>
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar(),
-              icon: const Icon(Icons.close),
-            ),
-            const SizedBox(width: 16),
-          ],
+              IconButton(
+                onPressed: () =>
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -64,15 +69,17 @@ class BonusCard extends StatelessWidget {
 
 void showBonusMessage(BuildContext context) {
   try {
-    Book book = context.read<BooksProvider>().getRandomBook();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        duration: const Duration(seconds: 5),
-        content: BonusCard(book: book),
-      ),
-    );
+    Book? book = context.read<BooksProvider>().getRandomBook();
+    if (book != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          duration: const Duration(seconds: 5),
+          content: BonusCard(book: book),
+        ),
+      );
+    }
   } catch (e) {
     //
   }

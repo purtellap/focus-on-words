@@ -47,48 +47,47 @@ class BookPage extends StatelessWidget {
                         ],
                       ),
                       body: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const SizedBox(height: 48),
-                            SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    height: 200,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          Dimens.borderRadius),
-                                      color: ThemeColors.cardColor,
-                                    ),
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 64),
+                              Container(
+                                height: 200,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                      Dimens.borderRadius),
+                                  color: ThemeColors.cardColor,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(book.thumbnail),
                                   ),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    book.title,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyles.text,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    book.author,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyles.subtext,
-                                  ),
-                                  const SizedBox(height: 32),
-                                  Text(
-                                    book.description,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyles.subtext
-                                        .copyWith(color: ThemeColors.textColor),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 16),
+                              Text(
+                                book.title,
+                                textAlign: TextAlign.left,
+                                style: TextStyles.text,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                book.authors,
+                                textAlign: TextAlign.left,
+                                style: TextStyles.subtext,
+                              ),
+                              const SizedBox(height: 32),
+                              Text(
+                                book.description,
+                                textAlign: TextAlign.left,
+                                style: TextStyles.subtext
+                                    .copyWith(color: ThemeColors.textColor),
+                              ),
+                              const SizedBox(height: 128),
+                            ],
+                          ),
                         ),
                       ),
                     );

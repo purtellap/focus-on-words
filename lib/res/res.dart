@@ -24,7 +24,7 @@ class ThemeColors {
 
   // Accent Colors
   static const Color underlineColor = Color(0x44000000);
-  static const Color favoritedColor = Color(0xff662233);
+  static const Color favoritedColor = Color.fromARGB(255, 174, 56, 85);
   static const Color selectionColor = Color(0x66888888);
   static const Color linkColor = Color(0xaaaaaaaa);
 }

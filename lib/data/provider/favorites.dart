@@ -3,39 +3,40 @@ import 'package:focus_on_words_app/data/book.dart';
 import 'package:focus_on_words_app/data/provider/books.dart';
 
 class FavoritesProvider extends ChangeNotifier {
-  List<String> _favorites = [];
+  final List<String> _favoriteIds = [];
+  List<Book> favoriteBooks = [];
 
-  List<Book> favoriteBooks(List<Book> allBooks) {
-    List<Book> favoriteBooks = [];
-    for (String s in _favorites) {
-      Book? book = BooksProvider.getBookFromId(s, allBooks);
-      if (book != null) {
-        favoriteBooks.add(book);
-      }
+  Future<void> getFavoriteBooks() async {
+    for (String s in _favoriteIds) {
+      _addBook(s);
     }
-    return favoriteBooks;
   }
 
   init() async {
-    _favorites = _getFavorites();
-  }
-
-  List<String> _getFavorites() {
-    return [];
+    await getFavoriteBooks();
   }
 
   /// Check if favorite
   bool isFavorite(String id) {
-    return _favorites.contains(id);
+    return _favoriteIds.contains(id);
   }
 
   /// Add/remove favorite
   void favorite(String id) {
-    if (_favorites.contains(id)) {
-      _favorites.remove(id);
+    if (_favoriteIds.contains(id)) {
+      _favoriteIds.remove(id);
+      favoriteBooks.removeWhere((e) => e.id == id);
     } else {
-      _favorites.add(id);
+      _favoriteIds.add(id);
+      _addBook(id);
     }
     notifyListeners();
+  }
+
+  Future<void> _addBook(String id) async {
+    Book? book = await BooksProvider.getBookFromId(id);
+    if (book != null) {
+      favoriteBooks.insert(0, book);
+    }
   }
 }

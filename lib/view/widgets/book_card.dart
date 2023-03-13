@@ -8,21 +8,17 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: ThemeColors.cardColor,
-      shape: RoundedRectangleBorder(
+    return Container(
+      decoration: BoxDecoration(
+        color: ThemeColors.cardColor,
         borderRadius: BorderRadius.circular(Dimens.borderRadius),
+        image: DecorationImage(
+          colorFilter:
+              const ColorFilter.mode(Color(0xaa000000), BlendMode.hardLight),
+          fit: BoxFit.cover,
+          image: NetworkImage(book.thumbnail),
+        ),
       ),
-      // child: const Align(
-      //   alignment: Alignment.bottomRight,
-      //   child: Padding(
-      //     padding: EdgeInsets.all(16),
-      //     child: Icon(
-      //       Icons.favorite,
-      //       color: ThemeColors.favoritedColor,
-      //     ),
-      //   ),
-      // ),
       child: Align(
         alignment: Alignment.topLeft,
         child: Padding(
@@ -30,15 +26,18 @@ class BookCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                book.title,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              Flexible(
+                child: Text(
+                  book.title,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               Text(
-                book.author,
+                book.authors,
                 style: const TextStyle(
                   color: ThemeColors.secondaryTextColor,
                 ),
+                overflow: TextOverflow.clip,
               ),
             ],
           ),

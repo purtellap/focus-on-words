@@ -57,7 +57,6 @@ class _BooksListState extends State<_BooksList> {
   @override
   Widget build(BuildContext context) {
     BooksProvider bp = context.read<BooksProvider>();
-    List<Book> books = bp.filterBooks(_query);
     return Column(
       children: [
         Padding(
@@ -89,19 +88,35 @@ class _BooksListState extends State<_BooksList> {
         ),
         const SizedBox(height: 16),
         Expanded(
-          child: GridView.builder(
-            itemCount: books.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
-            itemBuilder: (_, int i) {
-              return InkWell(
-                onTap: () => FlowUtils.pushBookDetail(context, books[i]),
-                child: GridTile(
-                  child: BookCard(book: books[i]),
-                ),
-              );
-            },
-          ),
+          child: FutureBuilder(
+              future: bp.searchBooks(_query.toLowerCase().trim()),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Book> books = snapshot.data ?? [];
+                  return GridView.builder(
+                    itemCount: books.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.9,
+                    ),
+                    itemBuilder: (_, int i) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () =>
+                              FlowUtils.pushBookDetail(context, books[i]),
+                          child: GridTile(
+                            child: BookCard(book: books[i]),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }),
         ),
       ],
     );

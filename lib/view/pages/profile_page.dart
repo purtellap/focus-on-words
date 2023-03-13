@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:focus_on_words_app/data/book.dart';
 import 'package:focus_on_words_app/data/provider/bonus.dart';
 import 'package:focus_on_words_app/data/provider/books.dart';
 import 'package:focus_on_words_app/data/provider/favorites.dart';
@@ -87,25 +86,29 @@ class _FavoritesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BooksProvider bp = context.read<BooksProvider>();
     return Consumer<FavoritesProvider>(
       builder: (context, fp, child) {
-        List<Book> books = fp.favoriteBooks(bp.books);
-        if (books.isEmpty) {
+        if (fp.favoriteBooks.isEmpty) {
           return Text(
             Strings.noFavorites,
             style: TextStyles.subtext.copyWith(fontStyle: FontStyle.italic),
           );
         } else {
           return GridView.builder(
-            itemCount: books.length,
+            itemCount: fp.favoriteBooks.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
+              crossAxisCount: 2,
+              childAspectRatio: 0.9,
+            ),
             itemBuilder: (_, int i) {
-              return InkWell(
-                onTap: () => FlowUtils.pushBookDetail(context, books[i]),
-                child: GridTile(
-                  child: BookCard(book: books[i]),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () =>
+                      FlowUtils.pushBookDetail(context, fp.favoriteBooks[i]),
+                  child: GridTile(
+                    child: BookCard(book: fp.favoriteBooks[i]),
+                  ),
                 ),
               );
             },

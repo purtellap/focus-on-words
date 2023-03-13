@@ -30,6 +30,8 @@ Future main() async {
     ),
   );
 
+  WidgetsFlutterBinding.ensureInitialized();
+
   setUrlStrategy(PathUrlStrategy());
 
   runApp(const App());
@@ -52,6 +54,7 @@ class App extends StatelessWidget {
         theme: ThemeData(
           visualDensity: VisualDensity.adaptivePlatformDensity,
           brightness: Brightness.dark,
+          highlightColor: ThemeColors.overlayColor,
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: Colors.white,
             selectionColor: ThemeColors.selectionColor,
@@ -59,6 +62,7 @@ class App extends StatelessWidget {
           ),
           colorScheme: const ColorScheme.dark(
             primary: ThemeColors.textColor,
+            secondary: Colors.black,
           ),
         ),
         initialRoute: Keys.home,
